@@ -1,16 +1,20 @@
 {
     "name": "tsx-model-generator",
     "version": "1.0.0",
-    "description": "A command-line tool that generates TypeScript models from Swagger YAML files using Google's Gemini AI model.",
+    "description": "CLI tool that uses Google's Gemini API to generate TypeScript models or other content from prompts.",
     "main": "index.js",
+    "type": "module",
     "bin": {
-      "tsx-model-generator": "./index.js"
+        "tsx-model-generator": "./index.js"
     },
     "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "node index.js"
     },
-    "keywords": [],
     "author": "",
-    "license": "ISC"
-  }
-  
+    "license": "MIT",
+    "dependencies": {
+        "@google/genai": "^0.3.0",
+        "fs": "^0.0.1-security",
+        "js-yaml": "^4.1.0"
+    }
+}

@@ -1,55 +1,85 @@
 # TSX Model Generator
 
-A command-line tool that generates TypeScript models from Swagger YAML files using Google's Gemini AI model.
+A CLI tool that uses Google's Gemini API to generate TypeScript model files (.tsx) from an OpenAPI YAML schema.
 
-## Features
+------------------------------------------------------------
 
-- Parse Swagger/OpenAPI YAML files
-- Generate TypeScript interfaces using Google Gemini AI
-- Customizable output directory
-- Support for both file-based and environment-based API keys
+## Features:
 
-## Installation
+- Reads OpenAPI 3.x YAML files
+- Sends schema to Gemini (via API key)
+- Outputs one .tsx model file per schema
+- Supports nested structures, enums, and cross-file imports
+- Optional model selection (e.g. gemini-pro, gemini-2.5-pro-preview-03-25)
 
-```bash
-npm install -g tsx-model-generator
-```
+------------------------------------------------------------
 
-## Usage
+## Installation:
 
-```bash
-tsx-model-generator -f path/to/swagger.yml -o ./models -k YOUR_GEMINI_API_KEY
-```
+1. Clone the repo:
 
-### Options
-
-- `-f, --file <path>`: Path to the Swagger YAML file (required)
-- `-o, --output <path>`: Output directory for generated models (default: ./models)
-- `-k, --api-key <key>`: Google Gemini API key (optional, can use GEMINI_API_KEY env var)
-
-## Development
-
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/tsx-model-generator.git
-cd tsx-model-generator
-```
+   `git clone https://github.com/yourusername/tsx-model-generator.git`
+   `cd tsx-model-generator`
 
 2. Install dependencies:
-```bash
-npm install
-```
 
-3. Build the project:
-```bash
-npm run build
-```
+   `npm install`
 
-4. Run in development mode:
-```bash
-npm run dev
-```
+3. Optionally link it globally:
 
-## License
+   `npm link`
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+    if you decide not to link then just run it with:
+
+    `node index.js --key YOUR_API_KEY --file path/to/openapi.yml [--model gemini-model-id]`
+
+------------------------------------------------------------
+
+## Usage:
+
+`tsx-model-generator --key YOUR_API_KEY --file path/to/openapi.yml [--model gemini-model-id]`
+
+**Required Flags:**
+--key or -k     Your Google Gemini API key
+--file or -f    Path to your OpenAPI YAML file
+
+**Optional Flags:**
+--model         Gemini model ID (default: gemini-2.0-flash) - check for current models [here](https://ai.google.dev/gemini-api/docs/models#model-variations)
+
+**Example:**
+
+`tsx-model-generator --key AIza... --file test-api.yml --model gemini-2.5-pro-preview-03-25`
+
+------------------------------------------------------------
+
+## Output:
+
+Generated .tsx files will be saved in the ./output directory. Example:
+
+output/
+├─ User.tsx
+├─ Product.tsx
+├─ Address.tsx
+
+------------------------------------------------------------
+
+## Gemini Prompt Strategy:
+
+The tool sends a structured prompt to Gemini that instructs it to:
+- Return one code block per model
+- Begin each code block with a comment: // FileName.tsx
+- Wrap each code block in triple backticks labeled tsx
+- Return only code (no explanation text)
+
+------------------------------------------------------------
+
+## Generating an API Key:
+
+You can get a Gemini API key from: https://makersuite.google.com/app/apikey
+
+(Do NOT commit your API key to version control)
+
+------------------------------------------------------------
+
+**License:**
+MIT
